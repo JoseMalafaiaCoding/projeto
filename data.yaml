@@ -1,0 +1,19 @@
+train: ./datasets/images/train
+val: ./datasets/images/val
+
+nc: 14  # número de classes
+names:
+  - earplugs
+  - half_mask
+  - hard_hat
+  - no_earplugs
+  - no_half_mask
+  - no_hard_hat
+  - no_safety_boots
+  - no_safety_glasses
+  - no_safety_gloves
+  - no_safety_vest
+  - safety_boots
+  - safety_glasses
+  - safety_gloves
+  - safety_vest

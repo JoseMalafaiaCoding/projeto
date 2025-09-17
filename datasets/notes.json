@@ -1,0 +1,65 @@
+{
+  "categories": [
+    {
+      "id": 0,
+      "name": "earplugs"
+    },
+    {
+      "id": 1,
+      "name": "half_mask"
+    },
+    {
+      "id": 2,
+      "name": "hard_hat"
+    },
+    {
+      "id": 3,
+      "name": "no_earplugs"
+    },
+    {
+      "id": 4,
+      "name": "no_half_mask"
+    },
+    {
+      "id": 5,
+      "name": "no_hard_hat"
+    },
+    {
+      "id": 6,
+      "name": "no_safety_boots"
+    },
+    {
+      "id": 7,
+      "name": "no_safety_glasses"
+    },
+    {
+      "id": 8,
+      "name": "no_safety_gloves"
+    },
+    {
+      "id": 9,
+      "name": "no_safety_vest"
+    },
+    {
+      "id": 10,
+      "name": "safety_boots"
+    },
+    {
+      "id": 11,
+      "name": "safety_glasses"
+    },
+    {
+      "id": 12,
+      "name": "safety_gloves"
+    },
+    {
+      "id": 13,
+      "name": "safety_vest"
+    }
+  ],
+  "info": {
+    "year": 2025,
+    "version": "1.0",
+    "contributor": "Label Studio"
+  }
+}
