@@ -12,7 +12,6 @@ def get_latest_model(models_dir="model_history"):
         return "best.pt"
     latest = max(subdirs, key=os.path.getmtime)
     file_path = os.path.join(latest, "weights", "best.pt")
-    print(f"Carregando modelo: {file_path}")
     return file_path
 
 def clean_old_trainings(models_dir="model_history", max_trainings=50):
@@ -58,9 +57,6 @@ def train_model():
         project=project_dir,
         device=0
     )
-# 2. Treinar com seu dataset
-if __name__ == "__main__":
-    clean_old_trainings()
-    train_model()
+
 
 
