@@ -11,6 +11,7 @@ SETTINGS.update({
 # 1. Carregar modelo YOLOv8
 model_path = get_latest_model()
 if __name__ == "__main__":
+    clean_old_trainings()
     print(f"Carregando modelo: {model_path}")
     train_model()
 # model = YOLO("best1.pt")
