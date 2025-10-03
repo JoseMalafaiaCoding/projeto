@@ -54,7 +54,7 @@ class YOLOModelTrain:
         model.to(device)
         model.train(
             data=f"{script_dir}\\data.yaml",
-            epochs=10,
+            epochs=50,
             imgsz=640,
             batch=16,
             name=exp_name,
