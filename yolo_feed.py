@@ -14,16 +14,23 @@ class YOLOfeed:
         self.cap = cv2.VideoCapture(0)
         self._register_routes()
         self._register_feed()
+        self.allowed_classes = []
 
     def gen_frames(self):
         while True:
             success, frame = self.cap.read()
             if not success:
                 break
-
+            
             # Rodar detecção no frame
             results = self.model(frame, verbose=False)
-            annotated_frame = results[0].plot()
+            result = results[0]
+            boxes = result.boxes
+            names = self.model.names
+            # # Substitui as caixas do resultado apenas pelas filtradas
+            mask = [self.model.names[int(b.cls[0])] in self.allowed_classes for b in boxes]
+            result.boxes = boxes[mask]
+            annotated_frame = result.plot() #results[0].plot()
 
             # Codificar frame para JPEG
             ret, buffer = cv2.imencode('.jpg', annotated_frame)

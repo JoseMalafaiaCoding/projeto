@@ -3,6 +3,7 @@ import cv2
 import matplotlib.pyplot as plt
 from ultralytics.utils import SETTINGS
 from yolo_interface import *
+import os
 
 current_path = os.path.dirname(os.path.abspath(__file__))
 SETTINGS.update({
@@ -11,6 +12,7 @@ SETTINGS.update({
 # 1. Carregar modelo YOLOv8
 # model_path = get_latest_model()
 if __name__ == "__main__":
+    print(os.getcwd())
     io = YOLOInterface("", "").root.mainloop()
 
 # # 3. Rodar a detecção

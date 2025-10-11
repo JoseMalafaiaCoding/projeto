@@ -5,6 +5,7 @@ import subprocess
 from yolo_process import *
 from yolo_model_train import *
 from yolo_feed import *
+from yolo_selector import *
 
 class YOLOInterface:
     def __init__(self, feed_func, train_func, output_dir="./datasets/processed"):
@@ -22,7 +23,11 @@ class YOLOInterface:
         self.feed_obj = YOLOfeed()
         self.model_obj = YOLOModelTrain()
         self.root.title("Interface YOLOv8")
-        self.root.geometry("400x200")
+        largura_tela = self.root.winfo_screenwidth()
+        altura_tela = self.root.winfo_screenheight()
+        x = (largura_tela // 2) - (400 // 2)
+        y = (altura_tela // 2) - (200 // 2)
+        self.root.geometry(f"400x200+{x}+{y}")
 
         # Botões principais
         btn_process = tk.Button(self.root, text="Processar Imagens", command=self.open_process_window, width=30, height=2)
@@ -34,9 +39,6 @@ class YOLOInterface:
         btn_train = tk.Button(self.root, text="Treinar Modelo", command=self.open_train_window, width=30, height=2)
         btn_train.pack(pady=10)
 
-    # =============================
-    # Janelas auxiliares
-    # =============================
     def open_process_window(self):
         input_dir = filedialog.askdirectory(title="Selecione a pasta com imagens")
         model_path = self.model_obj.get_latest_model()
@@ -52,6 +54,12 @@ class YOLOInterface:
             messagebox.showerror("Erro", f"Erro ao processar imagens:\n{str(e)}")
 
     def open_feed_window(self):
+        self.root.destroy()
+        root2 = tk.Tk()
+        selector = YOLOSelector(root2)
+        root2.mainloop()
+        print(selector.selected_classes)
+        self.feed_obj.allowed_classes = selector.selected_classes
         self.feed_obj.app.run(host="0.0.0.0", port=5000, debug=False)
 
     def open_train_window(self):
