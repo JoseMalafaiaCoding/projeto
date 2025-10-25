@@ -1,9 +1,11 @@
-from flask import Flask, Response, render_template
+from flask import Flask, Response, render_template, jsonify
 import cv2
 from ultralytics import YOLO
 from flask_cors import CORS
 from yolo_model_train import *
 import os
+
+alerta_ativo = False
 
 class YOLOfeed:
     def __init__(self):
@@ -14,7 +16,22 @@ class YOLOfeed:
         self.cap = cv2.VideoCapture(0)
         self._register_routes()
         self._register_feed()
+        self._register_status()
         self.allowed_classes = []
+
+    def verificar_alerta(self, results):
+        global alerta_ativo
+        alerta_ativo = any(
+             self.model.names[int(box.cls[0])] in [
+             "no_earplugs"
+             ,"no_half_mask"
+             ,"no_hard_hat"
+             ,"no_safety_boots"
+             ,"no_safety_glasses"
+             ,"no_safety_gloves"
+             ,"no_safety_vest"]
+             for r in results for box in r.boxes
+         )
 
     def gen_frames(self):
         while True:
@@ -31,9 +48,9 @@ class YOLOfeed:
             mask = [self.model.names[int(b.cls[0])] in self.allowed_classes for b in boxes]
             result.boxes = boxes[mask]
             annotated_frame = result.plot() #results[0].plot()
-
+            self.verificar_alerta(results)
             # Codificar frame para JPEG
-            ret, buffer = cv2.imencode('.jpg', annotated_frame)
+            ret, buffer = cv2.imencode(".jpg", annotated_frame)
             frame = buffer.tobytes()
 
             # Montar resposta no formato de streaming
@@ -48,7 +65,12 @@ class YOLOfeed:
         @self.app.route('/video_feed')
         def video_feed():
             return Response(self.gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
-
+    
+    def _register_status(self):
+        @self.app.route('/status')
+        def status():
+            global alerta_ativo
+            return jsonify({'alerta': alerta_ativo})
 
 
 # if __name__ == "__main__":

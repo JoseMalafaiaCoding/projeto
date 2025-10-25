@@ -5,7 +5,7 @@ import pytz
 import cv2
 
 class YOLOProcess:
-    def __init__(self, model_path, input_dir, output_dir, imgsz=640, device=0):
+    def __init__(self, model_path, input_dir, output_dir, allowed_classes:list, imgsz=640, device=0):
         """
         Classe para processar imagens com YOLOv8.
 
@@ -20,21 +20,23 @@ class YOLOProcess:
         self.output_dir = output_dir
         self.imgsz = imgsz
         self.device = device
-        self.allowed_classes = [
-            "earplugs"
-            ,"half_mask"
-            ,"hard_hat"
-            ,"no_earplugs"
-            ,"no_half_mask"
-            ,"no_hard_hat"
-            ,"no_safety_boots"
-            ,"no_safety_glasses"
-            ,"no_safety_gloves"
-            ,"no_safety_vest"
-            ,"safety_boots"
-            ,"safety_glasses"
-            ,"safety_gloves"
-            ,"safety_vest"]
+        self.allowed_classes = allowed_classes
+        
+        #[
+            #"earplugs"
+            #,"half_mask"
+            #,"hard_hat"
+            #,"no_earplugs"
+            #,"no_half_mask"
+            #,"no_hard_hat"
+            #,"no_safety_boots"
+            #,"no_safety_glasses"
+            #,"no_safety_gloves"
+            #,"no_safety_vest"
+            #,"safety_boots"
+            #,"safety_glasses"
+            #,"safety_gloves"
+            #,"safety_vest"]
 
         # Criar a pasta de saída se não existir
         os.makedirs(self.output_dir, exist_ok=True)

@@ -45,7 +45,12 @@ class YOLOInterface:
         if not input_dir:
             return
         try:
-            process_result = YOLOProcess(model_path=model_path,input_dir=input_dir,output_dir=".\\datasets\\processed").process_images()
+            self.root.destroy()
+            root2 = tk.Tk()
+            selector = YOLOSelector(root2)
+            root2.mainloop()
+            print(selector.selected_classes)
+            process_result = YOLOProcess(model_path=model_path,allowed_classes=selector.selected_classes,input_dir=input_dir,output_dir=".\\datasets\\processed").process_images()
             messagebox.showinfo("Sucesso", process_result)
 
             # Abre a pasta de saída no Explorer
