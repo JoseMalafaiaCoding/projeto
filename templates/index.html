@@ -3,9 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <title>Detecção de EPIs em Tempo Real</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            margin-top: 30px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        img {
+            border: 3px solid #444;
+            border-radius: 8px;
+        }
+
+        /* Indicador circular */
+        #alertCircle {
+            width: 40px;
+            height: 40px;
+            margin: 20px auto;
+            border-radius: 50%;
+            background-color: #322fc280; /* apagado (vermelho translúcido) */
+            box-shadow: 0 0 0px red;
+            transition: background-color 0.4s, box-shadow 0.4s;
+        }
+
+        /* Estado aceso */
+        #alertCircle.active {
+            background-color: red;
+            box-shadow: 0 0 20px red;
+        }
+    </style>
+
+    <script>
+        // Atualiza o estado do círculo com base em um endpoint Flask
+        async function atualizarIndicador() {
+            try {
+                const response = await fetch('/status');
+                const data = await response.json();
+                const circle = document.getElementById('alertCircle');
+                console.log(circle.classList.contains('active'))
+                if (data.alerta === true) {
+                    circle.classList.add('active');   // Acende o círculo
+                } else {
+                    circle.classList.remove('active'); // Apaga o círculo
+                }
+            } catch (error) {
+                console.error('Erro ao buscar status:', error);
+            }
+        }
+
+        // Atualiza a cada segundo
+        setInterval(atualizarIndicador, 1000);
+    </script>
 </head>
 <body>
     <h2>Feed da Webcam com YOLOv8</h2>
     <img src="{{ url_for('video_feed') }}" width="720" />
+    <div id="alertCircle"></div>
 </body>
 </html>
